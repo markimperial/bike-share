@@ -1,0 +1,97 @@
+### Union of 12 data sets
+
+SELECT *
+FROM `my-data-project-limoncello.cyclistic_divvy.2021-05` may
+UNION ALL
+SELECT *
+FROM `my-data-project-limoncello.cyclistic_divvy.2021-06` june
+UNION ALL
+SELECT *
+FROM `my-data-project-limoncello.cyclistic_divvy.2021-07` july
+UNION ALL
+SELECT *
+FROM `my-data-project-limoncello.cyclistic_divvy.2021-08` aug
+UNION ALL
+SELECT *
+FROM `my-data-project-limoncello.cyclistic_divvy.2021-09` sept
+UNION ALL
+SELECT *
+FROM `my-data-project-limoncello.cyclistic_divvy.2021-10` oct
+UNION ALL
+SELECT *
+FROM `my-data-project-limoncello.cyclistic_divvy.2021-11` nov
+UNION ALL
+SELECT *
+FROM `my-data-project-limoncello.cyclistic_divvy.2021-12` dec
+UNION ALL
+SELECT *
+FROM `my-data-project-limoncello.cyclistic_divvy.2022-01` jan
+UNION ALL
+SELECT *
+FROM `my-data-project-limoncello.cyclistic_divvy.2022-02` feb
+UNION ALL
+SELECT *
+FROM `my-data-project-limoncello.cyclistic_divvy.2022-03` mar
+UNION ALL
+SELECT *
+FROM `my-data-project-limoncello.cyclistic_divvy.2022-04` apr
+
+### Busiest and slowest daily demand
+
+SELECT
+	format_datetime('%A', started_at) as dow,
+	SUM(datetime_diff(ended_at,started_at,minute)) as total_riding_time,
+	COUNT(ride_id) AS total_rides
+FROM `my-data-project-limoncello.cyclistic_divvy.union_table` 
+GROUP BY dow
+ORDER BY total_riding_time DESC
+
+### Busiest and slowest monthly demand
+
+SELECT
+	format_datetime('%B', started_at) as month,
+	SUM(datetime_diff(ended_at,started_at,minute)) as total_riding_time,
+	COUNT(ride_id) AS total_rides
+FROM `my-data-project-limoncello.cyclistic_divvy.union_table` 
+GROUP BY month
+ORDER BY total_riding_time DESC
+
+### Total trips by day of the week
+
+SELECT day_of_week,
+       COUNT(*) AS total_rides
+FROM `my-data-project-limoncello.cyclistic_divvy.union_table`
+GROUP BY day_of_week
+ORDER BY total_rides DESC
+
+### Total trips by day of the week by rider
+
+SELECT member_casual,
+       COUNT(*) AS total_rides,
+       day_of_week AS dow
+FROM `my-data-project-limoncello.cyclistic_divvy.union_table`
+GROUP BY member_casual,dow
+ORDER BY total_rides DESC
+
+### Average ride duration
+
+SELECT member_casual,
+        COUNT(*) AS total_rides,
+        ROUND(AVG(ride_length),1) AS avg_by_rider_type,
+        (SELECT ROUND(AVG(ride_length),1) 
+        FROM `my-data-project-limoncello.cyclistic_divvy.union_table`) AS duration_avg
+FROM `my-data-project-limoncello.cyclistic_divvy.union_table`
+GROUP BY member_casual
+
+### Cyclistic Summary data
+
+SELECT member_casual,
+        format_datetime('%A', started_at) as dow,
+        format_datetime('%B', started_at) as month,
+        COUNT(*) AS total_rides,
+        SUM(datetime_diff(ended_at,started_at,minute)) as total_riding_time,
+        (SELECT ROUND(AVG(ride_length),1) 
+        FROM `my-data-project-limoncello.cyclistic_divvy.union_table`) AS ovrl_avg_ride,
+        ROUND(AVG(ride_length),1) AS avg_by_rider_type
+FROM `my-data-project-limoncello.cyclistic_divvy.union_table`
+GROUP BY member_casual, dow, month
