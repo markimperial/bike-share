@@ -8,6 +8,6 @@ I've saved the SQL code snippets in this repo, with the possibility of importing
 
 ## Ridership Data:
 The following contains links to my project portfolio page with a full outline of the project, the data analysis steps and the insights themselves
-- Project link (https://sites.google.com/view/the-rial-life/project-page)
-- Presentation alternative (https://docs.google.com/presentation/d/1VSdhgb2cSMNEVGIcp_6Z6XbhPGVs76Ne45bA3TOnoog/edit?usp=sharing)
-- Code
+- Project link [https://sites.google.com/view/the-rial-life/project-page]
+- Presentation alternative [https://docs.google.com/presentation/d/1VSdhgb2cSMNEVGIcp_6Z6XbhPGVs76Ne45bA3TOnoog/edit?usp=sharing]
+- Code [https://github.com/markimperial/bike-share/blob/200c96b4b3d815f4b0202371985348ed7a4da57f/data]
